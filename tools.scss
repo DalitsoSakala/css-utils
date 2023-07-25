@@ -1,0 +1,99 @@
+
+
+$breakpoints: 1 2 3 4 5 6 7 8 9 11 12;
+$spacings: 0 1 2 3 4 5;
+$sizes: '' s m l;
+
+// Breakpoint sizing
+@function breakpoint($size: '') {
+    @if $size ==s {
+        @return 765px;
+    }
+
+    @if $size ==m {
+        @return 900px;
+    }
+
+    @if $size ==l {
+        @return 1400px;
+    }
+
+    @return 0;
+
+}
+
+@each $break in $breakpoints {
+    @each $size in $sizes {
+        .c#{$size}#{$break} {
+            $value: $break/12 * 100%;
+            $width: breakpoint($size);
+
+            @if $width !=0 {
+                @media (max-width: #{$width}) {
+                    width: #{$value};
+                }
+            }
+
+            @else {
+                width: #{$value};
+            }
+        }
+    }
+}
+
+// Spacing: padding & pmrgin
+@each $space in $spacings {
+    $value: $space/5 * 2rem;
+
+    .pd#{$space} {
+        padding: $value;
+    }
+
+    .mg#{$space} {
+        padding: $value;
+    }
+
+}
+
+
+
+$flex-orientations: start end between center stretch;
+
+@each $orientation in $flex-orientations {
+
+    @each $ctx-key,
+    $ctx-value in (j:justify, a:align) {
+        .#{$orientation}-#{$ctx-key} {
+            #{$ctx-value}-content : #{$orientation};
+        }
+
+        .#{$orientation}-#{$ctx-key}i {
+            #{$ctx-value}-items : #{$orientation};
+        }
+    }
+}
+
+@each $key,
+$direction in (r:row, c:column) {
+    .fx-#{$key} {
+        flex-direction: $direction;
+    }
+}
+
+*[class~=fx-c],
+*[class~=fx-r] {
+    display: flex;
+}
+
+.ifx {
+    display: inline-flex;
+}
+
+.h100 {
+    height: 100%;
+}
+
+.sticky-top-container {
+    position: sticky;
+    top: var(--x-header-height);
+}
